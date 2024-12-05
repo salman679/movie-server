@@ -9,6 +9,10 @@ app.use(express.json());
 app.use(cors());
 dotenv.config();
 
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
+
 const { MongoClient, ServerApiVersion } = require("mongodb");
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@salman.uweo3xy.mongodb.net/?retryWrites=true&w=majority&appName=Salman`;
 
@@ -27,7 +31,7 @@ async function run() {
     await client.connect();
 
     const database = client.db("MovieDB");
-    const collection = database.collection("Movies");
+    database.collection("Movies");
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
