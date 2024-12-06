@@ -4,6 +4,11 @@ const app = express();
 const cors = require("cors");
 const dotenv = require("dotenv");
 
+const port = process.env.PORT || 5000;
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`);
+});
+
 //middleware
 app.use(express.json());
 app.use(cors());
@@ -28,13 +33,18 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    // await client.connect();
 
     const database = client.db("MovieDB");
-    database.collection("Movies");
+    const movieCollection = database.collection("Movies");
+
+    app.get("/movies", async (req, res) => {
+      const result = await movieCollection.find().toArray();
+      res.send(result);
+    });
 
     // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
+    // await client.db("admin").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
