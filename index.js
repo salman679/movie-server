@@ -43,9 +43,47 @@ async function run() {
       res.send(result);
     });
 
-    app.post("/addMovie", async (req, res) => {
+    app.post("/add-movie", async (req, res) => {
       const movie = req.body;
       const result = await movieCollection.insertOne(movie);
+      res.send(result);
+    });
+
+    app.get("/movie/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await movieCollection.findOne(query);
+      res.send(result);
+    });
+
+    app.put("/movie/:id", async (req, res) => {
+      const id = req.params.id;
+      const updatedMovie = req.body;
+      const filter = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updatedDoc = {
+        $set: {
+          title: updatedMovie.title,
+          description: updatedMovie.description,
+          genre: updatedMovie.genre,
+          duration: updatedMovie.duration,
+          releaseYear: updatedMovie.releaseYear,
+          rating: updatedMovie.rating,
+          poster: updatedMovie.poster,
+        },
+      };
+      const result = await movieCollection.updateOne(
+        filter,
+        updatedDoc,
+        options
+      );
+      res.send(result);
+    });
+
+    app.delete("/movie/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await movieCollection.deleteOne(query);
       res.send(result);
     });
 
