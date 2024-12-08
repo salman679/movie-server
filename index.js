@@ -39,7 +39,12 @@ async function run() {
     const movieCollection = database.collection("Movies");
 
     app.get("/movies", async (req, res) => {
-      const result = await movieCollection.find().toArray();
+      const result = await movieCollection
+        .find()
+        .sort({ rating: -1 })
+        .limit(6)
+        .toArray();
+
       res.send(result);
     });
 
@@ -53,6 +58,9 @@ async function run() {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await movieCollection.findOne(query);
+
+      console.log(result);
+
       res.send(result);
     });
 
@@ -84,16 +92,6 @@ async function run() {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await movieCollection.deleteOne(query);
-      res.send(result);
-    });
-
-    //user collection
-    const userCollection = database.collection("Users");
-
-    app.post("/users", (req, res) => {
-      const user = req.body;
-
-      const result = userCollection.insertOne(user);
       res.send(result);
     });
 
