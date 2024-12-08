@@ -4,11 +4,7 @@ const app = express();
 const cors = require("cors");
 
 require("dotenv").config();
-const port = process.env.PORT || 5000;
-
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
+// const port = process.env.PORT || 5000;
 
 //middleware
 app.use(express.json());
@@ -141,8 +137,6 @@ async function run() {
       const userEmail = req.params.email;
       const movieId = req.params.movieId;
 
-      console.log(req.params);
-
       const result = await favoriteCollection.deleteOne({
         userEmail,
         movieId,
@@ -153,9 +147,6 @@ async function run() {
 
     // Send a ping to confirm a successful connection
     // await client.db("admin").command({ ping: 1 });
-    console.log(
-      "Pinged your deployment. You successfully connected to MongoDB!"
-    );
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
