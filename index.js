@@ -149,6 +149,8 @@ async function run() {
       res.json(result);
     });
 
+    console.log("Connected to MongoDB");
+
     // Send a ping to confirm a successful connection
     // await client.db("admin").command({ ping: 1 });
   } finally {
